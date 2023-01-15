@@ -3,25 +3,27 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Rating } from 'primereact/rating';
-import { Galleria } from 'primereact/galleria';
 
-import { rentedSpaceService } from './services/rentedSpaceTebla.services';
+import './homeTable.css';
+import { useNavigate } from 'react-router-dom';
 
 const renderListItem = (data) => (
   <div className="col-12">
-    <div className="media-list-item media-card">
-      <img src={data.imgURL} alt={data.name} className="mediaimg" />
-      <div className="media-list-detail">
+    <div className="RentedSpace-list-item rentedSpace-card">
+      <img src={data.img} alt={data.name} className="rentedSpaceMediaimg" /> //base 64 y galeria
+      <div className="rentedSpace-list-detail">
+        <div className="rentedSpace-name">{data.name}</div>
         <Rating value={data.rating} readOnly cancel={false}></Rating>
       </div>
-      <div className="media-list-action">
-        <Button icon="pi pi-search" label="Add to Cart"></Button>
+      <div className="product-list-action">
+        <span className="rentedSpace-price">${data.price}</span>
+        <Button icon="pi pi-check" label="Info"></Button>
       </div>
     </div>
   </div>
 );
 
-const HomeTable = ({ mediaList, type }) => {
+const HomeTable = ({ rentedSpaceList, type }) => {
   const [layout, setLayout] = useState('grid');
   const [sortKey, setSortKey] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
@@ -33,25 +35,17 @@ const HomeTable = ({ mediaList, type }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const rentedSpaceService = new rentedSpaceService();
-
   const itemTemplate = (media, Layaout) => {
     if (!media) {
       return;
     }
-
     let result = renderGridItem(media);
 
     if (Layaout === 'list') {
       result = renderListItem(media);
     }
-
     return result;
   };
-
-  useEffect(() => {
-    productService.getProducts().then((data) => setProducts(data));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSortChange = (event) => {
     const value = event.value;
@@ -67,83 +61,37 @@ const HomeTable = ({ mediaList, type }) => {
     }
   };
 
-  const renderListItem = (data) => {
-    return (
-      <div className="col-12">
-        <div className="product-list-item">
-          <img
-            src={`images/product/${data.image}`}
-            onError={(e) => (e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')}
-            alt={data.name}
-          />
-          <div className="product-list-detail">
-            <div className="product-name">{data.name}</div>
-            <div className="product-description">{data.description}</div>
-            <Rating value={data.rating} readOnly cancel={false}></Rating>
-            <i className="pi pi-tag product-category-icon"></i>
-            <span className="product-category">{data.category}</span>
-          </div>
-          <div className="product-list-action">
-            <span className="product-price">${data.price}</span>
-            <Button
-              icon="pi pi-shopping-cart"
-              label="Add to Cart"
-              disabled={data.inventoryStatus === 'OUTOFSTOCK'}
-            ></Button>
-            <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const renderGridItem = (data) => {
     return (
       <div className="col-12 md:col-4 lg:col-3 xl:col-2">
-        <div className="product-grid-item card">
-          <div className="product-grid-item-top">
-            <div>
-              <i className="pi pi-tag product-category-icon"></i>
-              <span className="product-category">{data.category}</span>
-            </div>
-            <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
-          </div>
-          <div className="product-grid-item-content">
+        <div className="rentedSpace-grid-item card">
+          <div className="rentedSpace-grid-item-content rentedSpace-card">
             <img
-              src={`images/product/${data.image}`}
-              onError={(e) => (e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')}
+              src={data.img} //Gallery
               alt={data.name}
+              className="rentedSpaceMediaimg"
             />
-            <div className="product-name">{data.name}</div>
-            <div className="product-description">{data.description}</div>
+            <div className="rentedSpace-name">{data.name}</div>
             <Rating value={data.rating} readOnly cancel={false}></Rating>
           </div>
-          <div className="product-grid-item-bottom">
-            <span className="product-price">${data.price}</span>
+          <div className="rentedSpace-grid-item-bottom">
+            <span className="rentedSpace-price">${data.price}</span>
             <Button
-              icon="pi pi-shopping-cart"
-              label="Add to Cart"
-              disabled={data.inventoryStatus === 'OUTOFSTOCK'}
+              icon="pi pi-check"
+              className="rentedSpace-button"
+              label="Info"
+              onClick={() => navigate(`/${type}/${data.id}`)} //TO THE PAGE OF INFO
             ></Button>
           </div>
         </div>
       </div>
     );
-  };
-
-  const itemTemplate = (product, layout) => {
-    if (!product) {
-      return;
-    }
-
-    if (layout === 'list') return renderListItem(product);
-    else if (layout === 'grid') return renderGridItem(product);
   };
 
   const renderHeader = () => {
     return (
-      <div className="grid grid-nogutter">
-        <div className="col-6" style={{ textAlign: 'left' }}>
+      <div className="grid grid-nogutter header-rentedSpacetaleb">
+        <div className="col-6" style={{ textAlign: ' left' }}>
           <Dropdown
             options={sortOptions}
             value={sortKey}
@@ -159,22 +107,25 @@ const HomeTable = ({ mediaList, type }) => {
     );
   };
 
-  const header = renderHeader();
+  useEffect(() => {
+    if (rentedSpaceList.lenght > 0) {
+      setLoading(false);
+    }
+  }, [rentedSpaceList]);
 
   return (
-    <div className="dataview-demo">
-      <div className="card">
-        <DataView
-          value={products}
-          layout={layout}
-          header={header}
-          itemTemplate={itemTemplate}
-          paginator
-          rows={9}
-          sortOrder={sortOrder}
-          sortField={sortField}
-        />
-      </div>
+    <div className="table-rentedspacemedia-container">
+      <DataView
+        value={rentedSpaceList}
+        layout={layout}
+        header={renderHeader()}
+        itemTemplate={itemTemplate}
+        paginator
+        rows={9}
+        sortOrder={sortOrder}
+        sortField={sortField}
+        loading={loading}
+      />
     </div>
   );
 };

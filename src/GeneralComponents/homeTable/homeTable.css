@@ -1,0 +1,38 @@
+.card {
+  background-color: rgb(179, 230, 190);
+
+}
+
+.rentedSpace-card{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(179, 230, 190);
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+  
+}
+
+
+.header-rentedSpacetale{
+  border-radius: 2%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgb(179, 230, 190);
+}
+
+.p-dataview .p-dataview-header{
+  background-color: rgb(179, 230, 190)!important; //??
+}
+
+.rentedSpace-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rentedSpaceMediaimg{
+  height: 50vh;
+  width: auto;
+} 
