@@ -1,10 +1,3 @@
-// import 'primeicons/primeicons.css';
-// import 'primereact/resources/themes/lara-light-indigo/theme.css';
-// import 'primereact/resources/primereact.css';
-// import 'primeflex/primeflex.css';
-// import '../../index.css';
-// import ReactDOM from 'react-dom';
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 // import { Skeleton } from 'primereact/skeleton';
@@ -85,6 +78,3 @@ export const DropdownDemo = () => {
     </div>
   );
 };
-
-// const rootElement = document.getElementById("root");
-// ReactDOM.render(<DropdownDemo />, rootElement);

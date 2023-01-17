@@ -58,8 +58,13 @@ const UpMenu = () => {
       items: [
         {
           label: 'Post your space',
-          visible: !isOwner && token !== '',
+          visible: !isOwner && token !== '', //se convierte en owner
           command: () => navigate('/regspace')
+        },
+        {
+          label: 'Your Place',
+          visible: !isOwner && token !== '',
+          command: () => navigate('/myplace')
         }
       ]
     }
