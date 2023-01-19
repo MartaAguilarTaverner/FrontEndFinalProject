@@ -5,7 +5,7 @@ const initialState = {
   email: '',
   name: '',
   isAdmin: false,
-  subscribed: false,
+  isOwner: false,
   token: ''
 };
 
@@ -15,7 +15,7 @@ const reducers = {
     state.email = action.payload.email;
     state.name = action.payload.name;
     state.isAdmin = action.payload.isAdmin;
-    state.subscribed = action.payload.subscribed;
+    state.isOwner = action.payload.isOwner;
     state.token = action.payload.token;
   },
   logout: (state) => {
@@ -23,7 +23,7 @@ const reducers = {
     state.email = '';
     state.name = '';
     state.isAdmin = false;
-    state.subscribed = false;
+    state.isOwner = false;
     state.token = '';
   }
 };
@@ -35,3 +35,5 @@ export const userSlice = createSlice({
 });
 
 export const { login, logout } = userSlice.actions;
+
+export default userSlice.reducer;

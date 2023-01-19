@@ -1,1 +1,1 @@
-export * from './homeType.services';
+export * from './homeType.service';

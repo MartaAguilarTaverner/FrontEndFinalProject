@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
@@ -14,10 +15,8 @@ const useAuth = () => {
   return result;
 };
 
-const AdminRoute = () => {
+export default function AdminRoute() {
   const auth = useAuth();
 
   return auth ? <Outlet /> : <Navigate to="/home" />;
-};
-
-export default AdminRoute;
+}

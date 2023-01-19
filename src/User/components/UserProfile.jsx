@@ -5,12 +5,14 @@ import { useSelector } from 'react-redux';
 import { Card } from 'primereact/card';
 import { Chips } from 'primereact/chips';
 import { Button } from 'primereact/button';
-import { useFormik } from 'formik';
 
-const UserProfile = () => {
+import useUserHook from '../hooks';
+
+export default function UserProfile() {
   const { id } = useParams();
   const token = useSelector((state) => state.user.token);
   const [userItem, setUserItem] = useState({});
+  const { getUserById } = useUserHook();
 
   const getUser = useCallback(async () => {
     const result = await getUserById(token, id);
@@ -21,14 +23,14 @@ const UserProfile = () => {
     getUser();
   }, [getUser]);
 
+  const onClickImgProfile = () => {};
+
   const header = (
-    <img
-      alt="Card"
-      value={userItem.profileImg}
-      onClick="setState={newState}"
-      onError={(e) => (e.target.src = '/public/profiledefault.png')}
-    />
+    <button type="button" onClick={onClickImgProfile}>
+      <img alt="Card" value={userItem.profileImg} />
+    </button>
   );
+
   const footer = (
     <span>
       <Button label="Change" icon="pi pi-check" />
@@ -59,6 +61,4 @@ const UserProfile = () => {
       </div>
     </Card>
   );
-};
-
-export default UserProfile;
+}

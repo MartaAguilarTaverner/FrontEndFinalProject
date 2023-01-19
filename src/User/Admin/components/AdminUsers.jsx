@@ -3,17 +3,19 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
-
-import { getAllUsers } from '../../services';
 import { useSelector } from 'react-redux';
 
-const AdminUsers = () => {
+import useUserHook from '../../hooks';
+
+export default function AdminUsers() {
   const token = useSelector((state) => state.user.token);
   const [users, setUsers] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(null);
+  const { getAllUsers } = useUserHook();
 
   const getUserList = useCallback(async () => {
     const result = await getAllUsers(token);
+
     setUsers(result.data);
   }, [token]);
 
@@ -31,7 +33,7 @@ const AdminUsers = () => {
     </div>
   );
 
-  const actionBodyTemplate = (rowData) => (
+  const actionBodyTemplate = () => (
     <>
       <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" />
       <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" />
@@ -52,18 +54,17 @@ const AdminUsers = () => {
           globalFilter={globalFilter}
           responsiveLayout="scroll"
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
-          <Column field="id" header="Id" sortable style={{ minWidth: '12rem' }}></Column>
-          <Column field="profileImg" header="ProfileImg" sortable style={{ minWidth: '16rem' }}></Column>
-          <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
-          <Column field="surname" header="Surname" sortable style={{ minWidth: '16rem' }}></Column>
-          <Column field="email" header="Email" sortable style={{ minWidth: '20rem' }}></Column>
-          <Column field="age" header="Age" sortable style={{ minWidth: '10rem' }}></Column>
-          <Column field="isOwner" header="Is Owner" sortable style={{ minWidth: '10rem' }}></Column>
-          <Column header="Actions" exportable={false} style={{ minWidth: '8rem' }} body={actionBodyTemplate}></Column>
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false} />
+          <Column field="id" header="Id" sortable style={{ minWidth: '12rem' }} />
+          <Column field="profileImg" header="ProfileImg" sortable style={{ minWidth: '16rem' }} />
+          <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }} />
+          <Column field="surname" header="Surname" sortable style={{ minWidth: '16rem' }} />
+          <Column field="email" header="Email" sortable style={{ minWidth: '20rem' }} />
+          <Column field="age" header="Age" sortable style={{ minWidth: '10rem' }} />
+          <Column field="isOwner" header="Is Owner" sortable style={{ minWidth: '10rem' }} />
+          <Column header="Actions" exportable={false} style={{ minWidth: '8rem' }} body={actionBodyTemplate} />
         </DataTable>
       </div>
     </div>
   );
-};
-export default AdminUsers;
+}

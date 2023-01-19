@@ -3,17 +3,19 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
-
-import { getAllRentedSpaces } from '../../../RentedSpace/services';
 import { useSelector } from 'react-redux';
 
-const AdminReservations = () => {
+import useRentedSpaceHook from '../../../RentedSpace/hooks/rentedSpace.hook';
+
+export default function AdminReservations() {
   const token = useSelector((state) => state.user.token);
   const [RentedSpaces, setRentedSpaces] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(null);
+  const { getAllRentedSpaces } = useRentedSpaceHook();
 
   const getRentedSpacesList = useCallback(async () => {
     const result = await getAllRentedSpaces(token);
+
     setRentedSpaces(result.data);
   }, [token]);
 
@@ -31,7 +33,7 @@ const AdminReservations = () => {
     </div>
   );
 
-  const actionBodyTemplate = (rowData) => (
+  const actionBodyTemplate = () => (
     <>
       <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" />
       <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" />
@@ -52,15 +54,14 @@ const AdminReservations = () => {
           globalFilter={globalFilter}
           responsiveLayout="scroll"
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
-          <Column field="userId" header="userId" sortable style={{ minWidth: '12rem' }}></Column>
-          <Column field="rentedSpaceId" header="Rented Space" sortable style={{ minWidth: '10rem' }}></Column>
-          <Column field="startDate" header="Start Date" sortable style={{ minWidth: '10rem' }}></Column>
-          <Column field="endDate" header="End Date" sortable style={{ minWidth: '10rem' }}></Column>
-          <Column header="actions" exportable={false} style={{ minWidth: '12rem' }} body={actionBodyTemplate}></Column>
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false} />
+          <Column field="userId" header="userId" sortable style={{ minWidth: '12rem' }} />
+          <Column field="rentedSpaceId" header="Rented Space" sortable style={{ minWidth: '10rem' }} />
+          <Column field="startDate" header="Start Date" sortable style={{ minWidth: '10rem' }} />
+          <Column field="endDate" header="End Date" sortable style={{ minWidth: '10rem' }} />
+          <Column header="actions" exportable={false} style={{ minWidth: '12rem' }} body={actionBodyTemplate} />
         </DataTable>
       </div>
     </div>
   );
-};
-export default AdminReservations;
+}

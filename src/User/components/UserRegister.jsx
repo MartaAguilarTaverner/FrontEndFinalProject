@@ -7,11 +7,11 @@ import { Checkbox } from 'primereact/checkbox';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FileUpload } from 'primereact/fileupload';
 
-import { useUserHook } from '../hooks/user.hooks';
+import useUserHook from '../hooks';
 
 import '../UserGeneral.css';
 
-export const FormRegister = () => {
+export default function FormRegister() {
   const { onSubmitRegister } = useUserHook();
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
@@ -26,7 +26,7 @@ export const FormRegister = () => {
     // convert file to base64 encoded
     const file = event.files[0];
     const reader = new FileReader();
-    let blob = await fetch(file.objectURL).then((r) => r.blob()); //blob:url
+    const blob = await fetch(file.objectURL).then((r) => r.blob()); // blob:url
     reader.readAsDataURL(blob);
     reader.onloadend = function () {
       const base64data = reader.result;
@@ -112,15 +112,9 @@ export const FormRegister = () => {
           <label htmlFor="accept">I agree to the terms and conditions*</label>
         </div>
         <div className="field flex justify-content-center">
-          <Button
-            label="Submit"
-            className="mt-2"
-            onClick={() => onSubmitRegister(name, email, password, birthDate, subscription)}
-          />
+          <Button label="Submit" className="mt-2" onClick={() => onSubmitRegister(name, email, password, birthDate)} />
         </div>
       </div>
     </div>
   );
-};
-
-export default FormRegister;
+}

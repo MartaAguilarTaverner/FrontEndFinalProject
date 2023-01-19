@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
-import { useUserHook } from '../hooks/user.hooks';
+import useUserHook from '../hooks';
 
 import '../UserGeneral.css';
-const UserLogin = () => {
+
+export default function UserLogin() {
   const { onSubmitLogin } = useUserHook();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,6 +37,4 @@ const UserLogin = () => {
       </div>
     </div>
   );
-};
-
-export default UserLogin;
+}

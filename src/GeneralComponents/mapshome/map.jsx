@@ -7,7 +7,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { Toast } from 'primereact/toast';
 import { loadGoogleMaps, removeGoogleMaps } from './GoogleMaps';
 
-const GMapDemo = () => {
+function GMapDemo() {
   const [googleMapsReady, setGoogleMapsReady] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
   const [markerTitle, setMarkerTitle] = useState('');
@@ -34,12 +34,12 @@ const GMapDemo = () => {
   };
 
   const onOverlayClick = (event) => {
-    let isMarker = event.overlay.getTitle !== undefined;
+    const isMarker = event.overlay.getTitle !== undefined;
 
     if (isMarker) {
-      let title = event.overlay.getTitle();
+      const title = event.overlay.getTitle();
       infoWindow.current = infoWindow.current || new google.maps.InfoWindow();
-      infoWindow.setContent('<div>' + title + '</div>');
+      infoWindow.setContent(`<div>${title}</div>`);
       infoWindow.open(event.map, event.overlay);
       event.map.setCenter(event.overlay.getPosition());
 
@@ -54,7 +54,7 @@ const GMapDemo = () => {
   };
 
   const addMarker = () => {
-    let newMarker = new google.maps.Marker({
+    const newMarker = new google.maps.Marker({
       position: {
         lat: selectedPosition.lat(),
         lng: selectedPosition.lng()
@@ -124,7 +124,7 @@ const GMapDemo = () => {
 
   return (
     <div>
-      <Toast ref={toast}></Toast>
+      <Toast ref={toast} />
 
       {googleMapsReady && (
         <div className="card">
@@ -173,7 +173,4 @@ const GMapDemo = () => {
       </Dialog>
     </div>
   );
-};
-
-const rootElement = document.getElementById('root');
-ReactDOM.render(<GMapDemo />, rootElement);
+}

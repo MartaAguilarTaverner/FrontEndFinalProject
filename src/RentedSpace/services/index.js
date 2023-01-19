@@ -1,1 +1,5 @@
-export * from './rentedSpace.services';
+import RentedSpaceService from './rentedSpace.service';
+
+export default {
+  RentedSpaceService
+};

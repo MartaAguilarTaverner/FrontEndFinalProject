@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import AdminMenu from './components/AdminMenu';
 import AdminUsers from './components/AdminUsers';
-import AdminReservations from './components/AdminReservatios';
+import AdminReservations from './components/AdminReservations';
 import AdminRentedSpaces from './components/AdminRentedSpaces';
 import AdminReviews from './components/AdminReviews';
 
-const Admin = () => {
+export default function Admin() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
@@ -22,6 +22,4 @@ const Admin = () => {
       </div>
     </>
   );
-};
-
-export default Admin;
+}

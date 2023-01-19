@@ -1,10 +1,14 @@
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { useNavigate } from 'react-router-dom';
 import { Menubar } from 'primereact/menubar';
-import { useSelector, useDispatch } from 'react-redux';
+import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
 
 import { logout } from '../../User/store/user.store';
 
-const UpMenu = () => {
+export default function UpMenu() {
   const navigate = useNavigate;
   const token = useSelector((state) => state.user.token);
   const isAdmin = useSelector((state) => state.use.isAdmin);
@@ -63,17 +67,20 @@ const UpMenu = () => {
         },
         {
           label: 'Your Place',
-          visible: !isOwner && token !== '',
+          visible: isOwner && token !== '',
           command: () => navigate('/myplace')
         }
       ]
+    },
+    {
+      label: 'Admin',
+      visible: isAdmin && token !== '',
+      command: () => navigate('/admin')
     }
   ];
 
   const start = <img src="RentSpaceLogo.png" alt="logo" className="mr-2 logo" />;
   const end = <InputText placeholder="search" type="text" />;
 
-  return <Menubar className="upmenu" model={items} start={start} />;
-};
-
-export default UpMenu;
+  return <Menubar className="upmenu" model={items} start={start} end={end} />;
+}

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Outlet } from 'react-router-dom';
 
 import UpMenu from './GeneralComponents/menubar/menubarFirst';

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Carousel } from 'primereact/carousel';
-import { useEffect } from 'react';
 
-import './carouselMedia.css';
+import './CarouselMedia.css';
 
 const responsiveOptions = [
   {
@@ -22,7 +22,7 @@ const responsiveOptions = [
   }
 ];
 
-const CarouselMedia = ({ mediaList, itemTemplate }) => {
+export default function CarouselMedia({ mediaList, itemTemplate }) {
   const [media, setMedia] = useState([]);
 
   useEffect(() => {
@@ -42,6 +42,11 @@ const CarouselMedia = ({ mediaList, itemTemplate }) => {
       />
     </div>
   );
-};
+}
 
-export default CarouselMedia;
+CarouselMedia.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  mediaList: PropTypes.array.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  itemTemplate: PropTypes.object.isRequired
+};

@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { RentedSpaceService } from './services/rentedSpace.service';
 import { Galleria } from 'primereact/galleria';
 
-const GalleriaRentedSpace = () => {
+import { RentedSpaceService } from '../../RentedSpace/services/rentedSpace.service';
+
+import GalleryItem from './components/GalleryItem/GalleryItem';
+import GalleryThumbnail from './components/GalleryThumbnail/GalleryThumbnail';
+
+const renderGalleryItem = (data) => <GalleryItem itemImageSrc={data.itemImageSrc} alt={data.alt} />;
+const renderGalleryThumbnail = (data) => <GalleryThumbnail thumbnailImageSrc={data.thumbnailImageSrc} alt={data.alt} />;
+
+export default function GalleriaRentedSpace() {
   const [images, setImages] = useState(null);
 
-  const galleriaService = new RentedSpaceService();
+  const rentedSpaceService = new RentedSpaceService();
 
   const responsiveOptions = [
     {
@@ -26,17 +33,17 @@ const GalleriaRentedSpace = () => {
     }
   ];
 
+  const getImages = async () => {
+    const result = await rentedSpaceService.getImages();
+
+    if (result.data) {
+      setImages(result.data);
+    }
+  };
+
   useEffect(() => {
-    galleriaService.getImages().then((data) => setImages(data));
+    getImages();
   }, []);
-
-  const itemTemplate = (item) => {
-    return <img src={item.itemImageSrc} alt={item.alt} style={{ width: '100%', display: 'block' }} />;
-  };
-
-  const thumbnailTemplate = (item) => {
-    return <img src={item.thumbnailImageSrc} alt={item.alt} style={{ display: 'block' }} />;
-  };
 
   return (
     <div>
@@ -44,15 +51,13 @@ const GalleriaRentedSpace = () => {
         <Galleria
           value={images}
           responsiveOptions={responsiveOptions}
-          numVisible={7} //6 OR MORE AND ADD TO MEDIA
+          numVisible={7} // 6 OR MORE AND ADD TO MEDIA
           circular
           style={{ maxWidth: '800px' }}
-          item={itemTemplate}
-          thumbnail={thumbnailTemplate}
+          item={renderGalleryItem}
+          thumbnail={renderGalleryThumbnail}
         />
       </div>
     </div>
   );
-};
-
-export default GalleriaRentedSpace;
+}

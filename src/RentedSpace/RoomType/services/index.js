@@ -1,1 +1,1 @@
-export * from './roomType.services';
+export * from './roomType.service';
