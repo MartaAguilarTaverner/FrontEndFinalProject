@@ -9,12 +9,14 @@ import router from './router';
 
 import store from './store';
 
+import 'primeflex/primeflex.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+console.log('🚀 ~ file: index.jsx:11 ~ store', store);
 
 root.render(
   <React.StrictMode>

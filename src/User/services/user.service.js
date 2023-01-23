@@ -41,18 +41,18 @@ export default class UserService {
   }
 
   login({ email, password }) {
-    return axios.post('http://localhost:3006/user/login', {
+    return axios.post('http://localhost:3001/user/login', {
       email,
       password
     });
   }
 
   register(user) {
-    return axios.post('http://localhost:3006/user/register', user);
+    return axios.post('http://localhost:3001/user/register', user);
   }
 
   modifyUser(user, token) {
-    return axios.put('http://localhost:3006/user/modify', user, {
+    return axios.put('http://localhost:3001/user/modify', user, {
       headers: {
         Authorization: `Bearer ${token}`
       }

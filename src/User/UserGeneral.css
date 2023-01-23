@@ -26,7 +26,7 @@
 }
 
 .register-form{
-  background-color: rgb(215, 243, 136);
+  background-color: rgb(126, 143, 75);
   border-radius: 8%;
   padding: 1rem;
 }
@@ -37,5 +37,15 @@
   font-weight: bolder;
 }
 
-
 /* User Profile Component and view */
+
+.profile-container{
+  background-image: url("/public/background.jpg");
+  height: 100%;
+}
+
+.profile-form{
+  background-color: rgb(126, 143, 75);
+  border-radius: 8%;
+  padding: 1rem;
+}

@@ -1,64 +1,116 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { Card } from 'primereact/card';
-import { Chips } from 'primereact/chips';
 import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import { Image } from 'primereact/image';
 
 import useUserHook from '../hooks';
 
 export default function UserProfile() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const token = useSelector((state) => state.user.token);
-  const [userItem, setUserItem] = useState({});
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [age, setAge] = useState('');
+  const [editMode, setEditMode] = useState(false);
   const { getUserById } = useUserHook();
 
   const getUser = useCallback(async () => {
     const result = await getUserById(token, id);
-    setUserItem(result.data);
+    setName(result.data.name);
+    setSurname(result.data.surname);
+    setEmail(result.data.email);
+    setPhoneNumber(result.data.phoneNumber);
+    setAge(result.data.age);
   }, [id, token]);
 
   useEffect(() => {
     getUser();
+
+    const profileButtonEl = document.getElementById('profile-button');
+
+    profileButtonEl.addEventListener('onclick', () => {});
   }, [getUser]);
 
-  const onClickImgProfile = () => {};
+  const revertChanges = () => {
+    setEditMode(!editMode);
 
-  const header = (
-    <button type="button" onClick={onClickImgProfile}>
-      <img alt="Card" value={userItem.profileImg} />
-    </button>
-  );
-
-  const footer = (
-    <span>
-      <Button label="Change" icon="pi pi-check" />
-      <Button label="Save" icon="pi pi-times" className="p-button-secondary ml-2" />
-    </span>
-  );
+    if (editMode) {
+      getUser();
+    }
+  };
 
   return (
-    <Card className="profile-card">
-      <div className="card p-fluid">
-        <h5>Name</h5>
-        <Chips value={userItem.name} />
-
-        <h5>Surname</h5>
-        <Chips value={userItem.surname} />
-
-        <h5>Email</h5>
-        <Chips value={userItem.email} />
-
-        <h5>Phone Number</h5>
-        <Chips value={userItem.phoneNumber} />
-
-        <h5>Description</h5>
-        <Chips value={userItem.description} />
-
-        <h5>Birth Date</h5>
-        <Chips value={userItem.birthDate} />
+    <div className="flex justify-content-center align-items-center profile-container">
+      <div className="card profile-form m-2">
+        <h5 className="text-center profile-text">Profile</h5>
+        <div className="button">
+          <Image id="profile-button" src="/profiledefault.png" value="" alt="Image" width="100" />
+        </div>
+        <div className="grid p-1 p-fluid-inputgroup display-flex justify-content-around">
+          <div className="col-6">
+            <InputText
+              placeholder="name"
+              id="name"
+              value={name}
+              className="w-full"
+              disabled={!editMode}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="col-6">
+            <InputText
+              placeholder="surname"
+              id="surname"
+              value={surname}
+              className="w-full"
+              disabled={!editMode}
+              onChange={(e) => setSurname(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="grid p-1p-fluid-inputgroup display-flex justify-content-around">
+          <div className="col-6">
+            <InputText
+              placeholder="email"
+              id="email"
+              value={email}
+              className="w-full"
+              disabled={!editMode}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="col-6 justify-content-center">
+            <InputText
+              placeholder="phone"
+              id="phone"
+              value={phoneNumber}
+              className="w-full"
+              disabled={!editMode}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-12 flex justify-content-center">
+          <InputText
+            placeholder="age"
+            id="age"
+            value={age}
+            className=""
+            disabled={!editMode}
+            onChange={(e) => setAge(e.target.value)}
+          />
+        </div>
+        <div className="field flex justify-content-center">
+          <Button label={editMode ? 'Cancel' : 'Change'} className="mt-2" onClick={() => revertChanges()} />
+          {editMode ? <Button label="Save" className="mt-2" /> : null}
+        </div>
       </div>
-    </Card>
+    </div>
   );
 }

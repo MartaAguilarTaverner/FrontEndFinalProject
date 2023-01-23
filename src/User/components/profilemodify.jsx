@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
-import { Password } from 'primereact/password';
-import { Checkbox } from 'primereact/checkbox';
 import { FileUpload } from 'primereact/fileupload';
 
 import useUserHook from '../hooks';
 
 import '../UserGeneral.css';
 
-export default function FormRegister() {
-  const { onSubmitRegister } = useUserHook();
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [age, setAge] = useState(new Date());
-  const [accept, setAccept] = useState();
+export default function ProfileModify() {
+  const { id } = useParams();
+  const token = useSelector((state) => state.user.token);
+  const [userItem, setUserItem] = useState({});
+  const { getUserById } = useUserHook();
+  const [name, setName] = useState(userItem.name);
+  const [surname, setSurname] = useState(userItem.surname);
+  const [email, setEmail] = useState(userItem.email);
+  const [phone, setPhone] = useState(userItem.phoneNumber);
+  const [age, setAge] = useState(userItem.age);
+
+  const getUser = useCallback(async () => {
+    const result = await getUserById(token, id);
+    setUserItem(result.data);
+  }, [id, token]);
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
 
   const customBase64Uploader = async (event) => {
     // convert file to base64 encoded
@@ -113,12 +121,8 @@ export default function FormRegister() {
             uploadHandler={customBase64Uploader}
           />
         </div>
-        <div className="field-checkbox mt-2">
-          <Checkbox inputId="accept" name="accept" checked={accept} onChange={(e) => setAccept(e.checked)} />
-          <label htmlFor="accept">I agree to the terms and conditions*</label>
-        </div>
         <div className="field flex justify-content-center">
-          <Button label="Submit" className="mt-2" onClick={() => onSubmitRegister(name, email, password, age)} />
+          <Button label="Submit" className="mt-2" onClick={() => onSubmitModifyUser} />
         </div>
       </div>
     </div>

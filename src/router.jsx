@@ -3,9 +3,9 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 
 import App from './App';
 import Home from './Home/Home';
-import Login from './User/Login';
-import Register from './User/Register';
-import Profile from './User/Profile';
+import UserLogin from './User/Login';
+import UserRegister from './User/Register';
+import UserProfile from './User/Profile';
 import Admin from './User/Admin/Admin';
 
 import PrivateRoute from './GeneralComponents/routes/PrivateRoute';
@@ -17,13 +17,12 @@ const router = createBrowserRouter(
     <Route element={<App />}>
       <Route path="/" element={<Home />} />
       {/* <Route path="/maps" element={<HomeMaps />} /> */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<UserLogin />} />
+      <Route path="/register" element={<UserRegister />} />
       <Route element={<PrivateRoute />}>
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:id" element={<UserProfile />} />
         {/* <Route path="/reservation" element={<ReservePlace />} /> */}
         {/* <Route path="/trips" element={<Trips />} /> */}
-        {/* <Route path="/tripcompleted" element={<Opinion />} /> */}
         {/* <Route path="/registplace" element={<RegisPlace />} /> */}
       </Route>
       <Route element={<OwnerRoute />}>

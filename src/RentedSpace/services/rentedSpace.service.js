@@ -5,11 +5,19 @@ export default class RentedSpaceService {
     this.url = 'http://localhost:3001/rentedSpace';
   }
 
-  getImages() {
-    return axios('data/photos.json');
+  getAllRentedSpaces(rentedSpaceId) {
+    return axios.post(this.url, {
+      data: {
+        rentedSpaceId
+      }
+    });
   }
 
-  getAllRentedSpaces() {
-    return axios(this.api);
+  getAllbyRoomType(rentedSpaceId, roomTypeId) {
+    return axios.get(`${this.url}/roomtype`, rentedSpaceId, roomTypeId);
+  }
+
+  getImages() {
+    return axios('data/photos.json');
   }
 }

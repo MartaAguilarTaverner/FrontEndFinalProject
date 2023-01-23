@@ -8,10 +8,13 @@ import { Dropdown } from 'primereact/dropdown';
 
 import { logout } from '../../User/store/user.store';
 
+import './menubarFirst.css';
+
 export default function UpMenu() {
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   const token = useSelector((state) => state.user.token);
-  const isAdmin = useSelector((state) => state.use.isAdmin);
+  const userId = useSelector((state) => state.user.id);
+  const isAdmin = useSelector((state) => state.user.isAdmin);
   const isOwner = useSelector((state) => state.user.isOwner);
   const dispatch = useDispatch();
 
@@ -19,7 +22,7 @@ export default function UpMenu() {
     {
       label: '',
       icon: 'pi pi-fw pi-home',
-      command: () => navigate('/home')
+      command: () => navigate('/')
     },
     {
       label: 'User',
@@ -43,14 +46,14 @@ export default function UpMenu() {
         {
           label: 'Profile',
           visible: token !== '',
-          command: () => navigate('/profile')
+          command: () => navigate(`/profile/${userId}`)
         },
         {
           label: 'LogOut',
           visible: token !== '',
           command: () => {
             dispatch(logout());
-            navigate('/home');
+            navigate('/');
           }
         }
       ]
@@ -62,7 +65,7 @@ export default function UpMenu() {
       items: [
         {
           label: 'Post your space',
-          visible: !isOwner && token !== '', //se convierte en owner
+          visible: !isOwner && token !== '', // se convierte en owner
           command: () => navigate('/regspace')
         },
         {
@@ -79,7 +82,7 @@ export default function UpMenu() {
     }
   ];
 
-  const start = <img src="RentSpaceLogo.png" alt="logo" className="mr-2 logo" />;
+  const start = <img src="RentSpaceLogo.png" alt="logo" className="logo" />;
   const end = <InputText placeholder="search" type="text" />;
 
   return <Menubar className="upmenu" model={items} start={start} end={end} />;

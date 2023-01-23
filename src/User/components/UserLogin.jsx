@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
@@ -14,7 +15,7 @@ export default function UserLogin() {
   return (
     <div className="flex justify-content-center align-items-center login-container">
       <div className="card login-form">
-        <h5 className="text-center login-text">Login</h5>
+        <h5 className="flex text-center login-text">Login</h5>
         <div className="field">
           <span className="p-float-label">
             <InputText id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
