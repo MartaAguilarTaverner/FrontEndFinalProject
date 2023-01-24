@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { Button } from 'primereact/button';
@@ -9,7 +9,6 @@ import { Image } from 'primereact/image';
 import useUserHook from '../hooks';
 
 export default function UserProfile() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const token = useSelector((state) => state.user.token);
   const [name, setName] = useState('');
@@ -17,6 +16,7 @@ export default function UserProfile() {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [age, setAge] = useState('');
+  const [profileImg, setProfileImg] = useState('/profiledefault.png');
   const [editMode, setEditMode] = useState(false);
   const { getUserById } = useUserHook();
 
@@ -26,15 +26,28 @@ export default function UserProfile() {
     setSurname(result.data.surname);
     setEmail(result.data.email);
     setPhoneNumber(result.data.phoneNumber);
+    setProfileImg(result.data.profileImg);
     setAge(result.data.age);
   }, [id, token]);
+
+  const customBase64Uploader = async (event) => {
+    // convert file to base64 encoded
+    const file = event.files[0];
+    const reader = new FileReader();
+    const blob = await fetch(file.objectURL).then((r) => r.blob()); // blob:url
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      const base64data = reader.result;
+      console.log(base64data);
+    };
+  };
 
   useEffect(() => {
     getUser();
 
     const profileButtonEl = document.getElementById('profile-button');
 
-    profileButtonEl.addEventListener('onclick', () => {});
+    profileButtonEl.firstChild.addEventListener('click', () => {});
   }, [getUser]);
 
   const revertChanges = () => {
@@ -45,13 +58,26 @@ export default function UserProfile() {
     }
   };
 
+  const saveChanges = () => {
+    setEditMode(!editMode);
+
+    if (!editMode) {
+      getUser();
+    }
+  };
+
   return (
     <div className="flex justify-content-center align-items-center profile-container">
       <div className="card profile-form m-2">
         <h5 className="text-center profile-text">Profile</h5>
-        <div className="button">
-          <Image id="profile-button" src="/profiledefault.png" value="" alt="Image" width="100" />
-        </div>
+        <Image
+          placeholder="profileImg"
+          id="profile-button"
+          value={profileImg}
+          src="/profiledefault.png"
+          alt="Image"
+          width="100"
+        />
         <div className="grid p-1 p-fluid-inputgroup display-flex justify-content-around">
           <div className="col-6">
             <InputText
@@ -108,7 +134,7 @@ export default function UserProfile() {
         </div>
         <div className="field flex justify-content-center">
           <Button label={editMode ? 'Cancel' : 'Change'} className="mt-2" onClick={() => revertChanges()} />
-          {editMode ? <Button label="Save" className="mt-2" /> : null}
+          {editMode ? <Button label="Save" className="mt-2" onClick={() => saveChanges()} /> : null}
         </div>
       </div>
     </div>
