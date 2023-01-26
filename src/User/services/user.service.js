@@ -5,10 +5,10 @@ export default class UserService {
     this.url = 'http://localhost:3001/user';
   }
 
-  getAllUsers(token, userId) {
+  getAllUsers(token, userid) {
     return axios.post(this.url, {
       data: {
-        userId
+        userid
       },
       headers: {
         Authorization: `Bearer ${token}`
@@ -32,8 +32,8 @@ export default class UserService {
     });
   }
 
-  getUserById(token, userId) {
-    return axios.get(`${this.url}/${userId}`, {
+  getUserById(token, userid) {
+    return axios.get(`${this.url}/${userid}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -41,18 +41,18 @@ export default class UserService {
   }
 
   login({ email, password }) {
-    return axios.post('http://localhost:3001/user/login', {
+    return axios.post(`${this.url}/login`, {
       email,
       password
     });
   }
 
   register(user) {
-    return axios.post('http://localhost:3001/user/register', user);
+    return axios.post(`${this.url}/register`, user);
   }
 
-  modifyUser(user, token) {
-    return axios.put('http://localhost:3001/user/modify', user, {
+  modifyUser(user, userId, token) {
+    return axios.put(`${this.url}/modifyuser`, user, {
       headers: {
         Authorization: `Bearer ${token}`
       }
