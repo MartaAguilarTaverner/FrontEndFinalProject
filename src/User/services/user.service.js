@@ -5,10 +5,10 @@ export default class UserService {
     this.url = 'http://localhost:3001/user';
   }
 
-  getAllUsers(token, userid) {
+  getAllUsers(token, userId) {
     return axios.post(this.url, {
       data: {
-        userid
+        userId
       },
       headers: {
         Authorization: `Bearer ${token}`
@@ -16,24 +16,24 @@ export default class UserService {
     });
   }
 
-  getAllUsersAdmin(token, userid) {
-    return axios.get(`${this.url}/admin`, userid, {
+  getAllUsersAdmin(token, userId) {
+    return axios.get(`${this.url}/admin`, userId, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
   }
 
-  getAllUsersOwner(token, userid) {
-    return axios.get(`${this.url}/owner`, userid, {
+  getAllUsersOwner(token, userId) {
+    return axios.get(`${this.url}/owner`, userId, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
   }
 
-  getUserById(token, userid) {
-    return axios.get(`${this.url}/${userid}`, {
+  getUserById(token, userId) {
+    return axios.get(`${this.url}/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
