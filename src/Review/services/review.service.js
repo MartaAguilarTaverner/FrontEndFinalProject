@@ -17,11 +17,11 @@ export default class ReviewService {
     });
   }
 
-  doReview(token, userId, rentedSpaceid) {
-    return axios.post(`${this.url}/${rentedSpaceid}`, {
+  doReview(token, userId, rentedSpaceId) {
+    return axios.post(`${this.url}/${rentedSpaceId}`, {
       data: {
         userId,
-        rentedSpaceid
+        rentedSpaceId
       },
       headers: {
         Authorization: `Bearer ${token}`
