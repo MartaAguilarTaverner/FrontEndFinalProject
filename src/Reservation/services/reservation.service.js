@@ -16,7 +16,7 @@ export default class ReservationService {
     });
   }
 
-  getAllbyuserId(token, userId) {
+  getAllReservationbyuser(token, userId) {
     return axios.get(`${this.url}/user`, {
       data: {
         userId
@@ -27,7 +27,7 @@ export default class ReservationService {
     });
   }
 
-  getAllbyRentedSpace(token, userId, rentedSpaceId) {
+  getAllReservationbyRentedSpace(token, userId, rentedSpaceId) {
     return axios.get(`${this.url}/rentedspace`, {
       data: {
         userId,
@@ -39,7 +39,7 @@ export default class ReservationService {
     });
   }
 
-  getOnebyId(token, userId, reservationId) {
+  getReservationbyId(token, userId, reservationId) {
     return axios.get(`${this.url}/${reservationId}`, {
       data: {
         userId,
