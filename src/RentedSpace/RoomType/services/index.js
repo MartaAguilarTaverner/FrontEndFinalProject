@@ -1,1 +1,3 @@
-export * from './roomType.service';
+import RoomTypeService from './roomType.service';
+
+export default RoomTypeService;
