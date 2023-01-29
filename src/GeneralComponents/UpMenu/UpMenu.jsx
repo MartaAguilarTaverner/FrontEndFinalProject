@@ -4,11 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
 
 import { logout } from '../../User/store/user.store';
 
-import './menubarFirst.css';
+import './UpMenu.css';
 
 export default function UpMenu() {
   const navigate = useNavigate();
@@ -39,9 +38,9 @@ export default function UpMenu() {
           command: () => navigate('/register')
         },
         {
-          label: 'Trips',
-          visible: token !== '',
-          command: () => navigate('/trips')
+          label: 'User List',
+          visible: token !== '' && isAdmin,
+          command: () => navigate('/user-list')
         },
         {
           label: 'Profile',
@@ -49,7 +48,7 @@ export default function UpMenu() {
           command: () => navigate(`/profile/${userId}`)
         },
         {
-          label: 'LogOut',
+          label: 'Logout',
           visible: token !== '',
           command: () => {
             dispatch(logout());
@@ -59,21 +58,33 @@ export default function UpMenu() {
       ]
     },
     {
-      label: 'BeOwner',
+      label: 'Owner',
       icon: 'pi pi-fw pi-home',
       visible: token !== '',
       items: [
         {
-          label: 'Post your space',
-          visible: !isOwner && token !== '', // se convierte en owner
-          command: () => navigate('/regspace')
+          label: 'Become an owner',
+          visible: !isOwner && token !== '',
+          command: () => navigate('/register-space')
         },
         {
           label: 'Your Place',
           visible: isOwner && token !== '',
-          command: () => navigate('/myplace')
+          command: () => navigate('/your-place')
         }
       ]
+    },
+    {
+      label: 'Reservations',
+      icon: 'pi pi-fw pi-calendar',
+      visible: token !== '',
+      command: () => navigate('/reservation')
+    },
+    {
+      label: 'Reviews',
+      icon: 'pi pi-fw pi-calendar',
+      visible: token !== '',
+      command: () => navigate('/reservation')
     },
     {
       label: 'Admin',
@@ -83,7 +94,6 @@ export default function UpMenu() {
   ];
 
   const start = <img src="RentSpaceLogo.png" alt="logo" className="logo" />;
-  const end = <InputText placeholder="search" type="text" />;
 
-  return <Menubar className="upmenu" model={items} start={start} end={end} />;
+  return <Menubar className="upmenu" model={items} start={start} />;
 }
