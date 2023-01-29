@@ -102,6 +102,17 @@ const useUserHook = () => {
     return result;
   };
 
+  const createUser = async (user) => {
+    let result;
+    try {
+      result = await userService.register(user);
+    } catch (error) {
+      alert(error);
+    }
+
+    return result;
+  };
+
   const updateUser = async (token, user, userId) => {
     let result;
 
@@ -114,11 +125,11 @@ const useUserHook = () => {
     return result;
   };
 
-  const deleteUser = async (token, userId) => {
+  const deleteUser = async (token, loggedId, userId) => {
     let result;
 
     try {
-      result = await userService.deleteUser(token, userId);
+      result = await userService.deleteUser(token, loggedId, userId);
     } catch (error) {
       alert(error);
     }
@@ -126,7 +137,16 @@ const useUserHook = () => {
     return result;
   };
 
-  return { onSubmitLogin, onSubmitRegister, getUserById, getAllUsers, getAllUserOwner, updateUser, deleteUser };
+  return {
+    onSubmitLogin,
+    onSubmitRegister,
+    getUserById,
+    getAllUsers,
+    getAllUserOwner,
+    createUser,
+    updateUser,
+    deleteUser
+  };
 };
 
 export default useUserHook;

@@ -6,27 +6,45 @@ export default class UserService {
   }
 
   getAllUsers(token, userId) {
-    return axios.get(this.url, userId, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    return axios.post(
+      this.url,
+      {
+        userId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
   }
 
   getAllUsersAdmin(token, userId) {
-    return axios.get(`${this.url}/admin`, userId, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    return axios.post(
+      `${this.url}/admin`,
+      {
+        data: {
+          userId
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
   }
 
   getAllUsersOwner(token, userId) {
-    return axios.get(`${this.url}/owner`, userId, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    return axios.post(
+      `${this.url}/owner`,
+      { data: { userId } },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
   }
 
   getUserById(token, userId) {
@@ -56,10 +74,10 @@ export default class UserService {
     });
   }
 
-  deleteUser(token, userId) {
-    return axios.delete(`${this.url}/delete/${userId}`, {
+  deleteUser(token, loggedId, userId) {
+    return axios.delete(`${this.url}/${userId}`, {
       data: {
-        id: userId
+        userId: loggedId
       },
       headers: {
         Authorization: `Bearer ${token}`
