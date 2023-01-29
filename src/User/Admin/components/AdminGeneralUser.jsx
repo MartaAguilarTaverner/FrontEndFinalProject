@@ -5,7 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
-import useUserHook from '../../hooks';
+import useUserHook from '../../hooks/user.hook';
 
 import './AdminGeneralUser.scss';
 import AdminGeneralNewUser from './AdminGeneralNewUser';
