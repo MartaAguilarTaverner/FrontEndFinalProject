@@ -5,19 +5,73 @@ export default class RentedSpaceService {
     this.url = 'http://localhost:3001/rentedSpace';
   }
 
-  getAllRentedSpaces(rentedSpaceId) {
-    return axios.post(this.url, {
-      data: {
-        rentedSpaceId
+  getAllRentedSpaces() {
+    return axios.get(this.url);
+  }
+
+  getAllRentedSpacebyRoomType(roomTypeId) {
+    return axios.get(`${this.url}/roomtype/${roomTypeId}`);
+  }
+
+  getAllRentedSpaceByHomeType(homeTypeId) {
+    return axios.get(`${this.url}/hometype/${homeTypeId}`);
+  }
+
+  getRentedSpaceByMediaId(mediaId) {
+    return axios.get(`${this.url}/media/${mediaId}`);
+  }
+
+  getRentedSpaceById(rentedSpaceId) {
+    return axios.get(`${this.url}/${rentedSpaceId}`);
+  }
+
+  createRentedSpace(token, userId, rentedSpace) {
+    return axios.post(
+      `${this.url}`,
+      {
+        data: {
+          userId,
+          rentedSpace
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
   }
 
-  getAllRentedSpacebyRoomType(rentedSpaceId, roomTypeId) {
-    return axios.get(`${this.url}/roomtype`, rentedSpaceId, roomTypeId);
+  modifyRentedSpace({ token, userId, rentedSpaceId, rentedSpace }) {
+    return axios.put(
+      `${this.url}/${rentedSpaceId}`,
+      {
+        data: {
+          userId,
+          rentedSpace
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
   }
 
-  getImages() {
-    return axios('data/photos.json');
+  deleteRentedSpace(token, userId, rentedSpaceId) {
+    return axios.delete(
+      `${this.url}/${rentedSpaceId}`,
+      {
+        data: {
+          userId
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
   }
 }

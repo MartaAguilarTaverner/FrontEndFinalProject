@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default class MediaService {
   constructor() {
-    this.url = 'http://localhost:3001/review';
+    this.url = 'http://localhost:3001/media';
   }
 
   getAllMedia() {
@@ -13,10 +13,11 @@ export default class MediaService {
     return axios.get(`${this.url}/${mediaId}`);
   }
 
-  createMedia(token, userId, rentedSpaceId, mediaId) {
-    return axios.post(`${this.url}/${mediaId}`, {
+  createMedia({ token, userId, media, rentedSpaceId }) {
+    return axios.post(`${this.url}}`, {
       data: {
         userId,
+        media,
         rentedSpaceId
       },
       headers: {
@@ -25,12 +26,11 @@ export default class MediaService {
     });
   }
 
-  modifyMedia(token, userId, rentedSpaceId, mediaId) {
+  modifyMedia({ token, userId, media, mediaId }) {
     return axios.put(`${this.url}/${mediaId}`, {
       data: {
         userId,
-        rentedSpaceId,
-        mediaId
+        media
       },
       headers: {
         Authorization: `Bearer ${token}`
@@ -38,12 +38,10 @@ export default class MediaService {
     });
   }
 
-  deleteMedia(token, userId, rentedSpaceId, mediaId) {
+  deleteMedia(token, userId, mediaId) {
     return axios.delete(`${this.url}/${mediaId}`, {
       data: {
-        userId,
-        rentedSpaceId,
-        mediaId
+        userId
       },
       headers: {
         Authorization: `Bearer ${token}`
