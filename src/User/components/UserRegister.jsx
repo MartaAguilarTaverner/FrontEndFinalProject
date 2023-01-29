@@ -49,8 +49,6 @@ export default function FormRegister() {
   };
 
   useEffect(() => {
-    console.log(name, surname, email, phoneNumber, password, age, profileImg, accept);
-
     if (name && surname && email && phoneNumber && password && age && profileImg && accept) {
       setIsFulfilled(true);
     }

@@ -38,7 +38,6 @@ export default function UserProfile() {
     reader.readAsDataURL(blob);
     reader.onloadend = function () {
       const base64data = reader.result;
-      console.log(base64data);
     };
   };
 
