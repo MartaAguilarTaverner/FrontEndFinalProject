@@ -13,7 +13,7 @@ export default class RentedSpaceService {
     });
   }
 
-  getAllbyRoomType(rentedSpaceId, roomTypeId) {
+  getAllRentedSpacebyRoomType(rentedSpaceId, roomTypeId) {
     return axios.get(`${this.url}/roomtype`, rentedSpaceId, roomTypeId);
   }
 
