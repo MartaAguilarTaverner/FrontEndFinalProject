@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,9 +38,9 @@ const useUserHook = () => {
     }
   };
 
-  const onSubmitRegister = async (name, surname, email, password, age, profileImg) => {
+  const onSubmitRegister = async ({ name, surname, email, phoneNumber, password, age, profileImg }) => {
     try {
-      if (checkIfRegisterDataIsValid(name, surname, email, password, age, profileImg)) {
+      if (checkIfRegisterDataIsValid(name, surname, email, phoneNumber, password, age, profileImg)) {
         alert('Something went wrong while trying to register with this data');
 
         return;
@@ -51,6 +52,7 @@ const useUserHook = () => {
         email,
         password,
         age,
+        phoneNumber,
         profileImg
       };
 
@@ -64,11 +66,11 @@ const useUserHook = () => {
     }
   };
 
-  const getUserById = async (token, id) => {
+  const getUserById = async (token, userId) => {
     let result;
 
     try {
-      result = await userService.getUserById(token, id);
+      result = await userService.getUserById(token, userId);
     } catch (error) {
       alert(error);
     }
@@ -76,11 +78,11 @@ const useUserHook = () => {
     return result;
   };
 
-  const getAllUsers = async (token) => {
+  const getAllUsers = async (token, userId) => {
     let result;
 
     try {
-      result = await userService.getAllUsers(token);
+      result = await userService.getAllUsers(token, userId);
     } catch (error) {
       alert(error);
     }
@@ -88,7 +90,43 @@ const useUserHook = () => {
     return result;
   };
 
-  return { onSubmitLogin, onSubmitRegister, getUserById, getAllUsers };
+  const getAllUserOwner = async (token, userId) => {
+    let result;
+
+    try {
+      result = await userService.getAllUsersOwner(token, userId);
+    } catch (error) {
+      alert(error);
+    }
+
+    return result;
+  };
+
+  const updateUser = async (token, user, userId) => {
+    let result;
+
+    try {
+      result = await userService.modifyUser(token, user, userId);
+    } catch (error) {
+      alert(error);
+    }
+
+    return result;
+  };
+
+  const deleteUser = async (token, userId) => {
+    let result;
+
+    try {
+      result = await userService.deleteUser(token, userId);
+    } catch (error) {
+      alert(error);
+    }
+
+    return result;
+  };
+
+  return { onSubmitLogin, onSubmitRegister, getUserById, getAllUsers, getAllUserOwner, updateUser, deleteUser };
 };
 
 export default useUserHook;

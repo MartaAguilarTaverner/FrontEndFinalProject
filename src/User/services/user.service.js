@@ -6,10 +6,7 @@ export default class UserService {
   }
 
   getAllUsers(token, userId) {
-    return axios.post(this.url, {
-      data: {
-        userId
-      },
+    return axios.get(this.url, userId, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -51,8 +48,19 @@ export default class UserService {
     return axios.post(`${this.url}/register`, user);
   }
 
-  modifyUser(user, userId, token) {
-    return axios.put(`${this.url}/modifyuser`, user, {
+  modifyUser(token, user, userId) {
+    return axios.put(`${this.url}/modify/${userId}`, user, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  deleteUser(token, userId) {
+    return axios.delete(`${this.url}/delete/${userId}`, {
+      data: {
+        id: userId
+      },
       headers: {
         Authorization: `Bearer ${token}`
       }
