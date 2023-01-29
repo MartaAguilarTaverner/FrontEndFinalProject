@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
-import { useSelector } from 'react-redux';
 
-import { getAllReservations } from '../../../Reservation/services/reservation.service';
+import useReservationHook from '../../../Reservation/hooks';
 
 export default function AdminReservations() {
   const token = useSelector((state) => state.user.token);
   const [Reservarions, setReservarions] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(null);
+  const { getAllReservations } = useReservationHook();
 
   const getReservarionsList = useCallback(async () => {
     const result = await getAllReservations(token);
+
     setReservarions(result.data);
   }, [token]);
 
