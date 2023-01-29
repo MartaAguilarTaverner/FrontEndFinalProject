@@ -1,36 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
-import { InputTextarea } from 'primereact/inputtextarea';
+import { InputNumber } from 'primereact/inputnumber';
 import { FileUpload } from 'primereact/fileupload';
-import { Calendar } from 'primereact/calendar';
+import { InputTextarea } from 'primereact/inputtextarea';
 
-import useUserHook from '../../hooks';
-// CSS
+import useRentedSpaceHook from '../../hooks/rentedSpace.hook';
 
-export default function FormRegister() {
-  const { onSubmitRegister } = useUserHook();
+export default function RentspaceRegister() {
+  const { onSubmitSpaceregister } = useRentedSpaceHook();
   const [title, setTitle] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [maxPersons, setMaxPersons] = useState(0);
+  const [numBedrooms, setNumBedrooms] = useState(0);
+  const [numBathrooms, setNumBathrooms] = useState(0);
   const [description, setDescription] = useState('');
-  const [password, setPassword] = useState('');
-  const [age, setAge] = useState(new Date());
-  const [accept, setAccept] = useState();
+  const [address, setAddress] = useState('');
+  const [tv, setTv] = useState(false);
+  const [kitchen, setKitchen] = useState(false);
+  const [airconditioner, setAirconditioner] = useState(false);
+  const [heating, setHeating] = useState(false);
+  const [internet, setInternet] = useState(false);
+  const [price, setPrice] = useState(0);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [isFulfilled, setIsFulfilled] = useState(false);
 
-  const customBase64Uploader = async (event) => {
-    // convert file to base64 encoded
-    const file = event.files[0];
-    const reader = new FileReader();
-    const blob = await fetch(file.objectURL).then((r) => r.blob()); // blob:url
-    reader.readAsDataURL(blob);
-    reader.onloadend = function () {
-      const base64data = reader.result;
-      console.log(base64data);
+  const submit = () => {
+    const newRentedSpace = {
+      title,
+      maxPersons,
+      numBedrooms,
+      numBathrooms,
+      description,
+      address,
+      tv,
+      kitchen,
+      airconditioner,
+      heating,
+      internet,
+      price,
+      latitude,
+      longitude
     };
+
+    onSubmitSpaceregister(newRentedSpace);
+  };
+
+  useEffect(() => {
+    if (
+      title &&
+      maxPersons &&
+      numBedrooms &&
+      numBathrooms &&
+      description &&
+      address &&
+      tv &&
+      kitchen &&
+      airconditioner &&
+      heating &&
+      internet &&
+      price &&
+      latitude &&
+      longitude
+    ) {
+      setIsFulfilled(true);
+    }
+  }, [
+    title,
+    maxPersons,
+    numBedrooms,
+    numBathrooms,
+    description,
+    address,
+    tv,
+    kitchen,
+    airconditioner,
+    heating,
+    internet,
+    price,
+    latitude,
+    longitude
+  ]);
+
+  const setTest = (value) => {
+    console.log('🚀 ~ file: rentedSpaceRegister.jsx:87 ~ setTest ~ value', value);
   };
 
   return (
@@ -38,80 +92,112 @@ export default function FormRegister() {
       <div className="card register-form">
         <h5 className="text-center register-text">Regist your Space</h5>
         <div className="field">
-          <span className="p-float-label w-full">
-            <InputText id="name" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full" />
-            <label htmlFor="name">Title</label>
-          </span>
+          <label htmlFor="Title" className='"block'>
+            Title
+          </label>
+          <InputText id="title" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full" />
         </div>
-        <div className="field">
-          <span className="p-float-label w-full">
-            <InputText id="surname" value={surname} onChange={(e) => setSurname(e.target.value)} className="w-full" />
-            <label htmlFor="surname">surname</label>
-          </span>
-        </div>
-        <div className="field mt-4">
-          <span className="p-float-label p-input-icon-right w-full">
-            <i className="pi pi-envelope" />
-            <InputText id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full" />
-            <label htmlFor="email">Email</label>
-          </span>
-        </div>
-        <div className="field mt-4">
-          <span className="p-float-label p-input-icon-right w-full">
-            <i className="pi pi-envelope" />
-            <InputText id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full" />
-            <label htmlFor="phone">Phone Number</label>
-          </span>
-        </div>
-        <div className="field mt-4 w-full">
-          <span className="p-float-label w-full">
-            <Password id="password" className="w-full" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <label htmlFor="password">Password*</label>
-          </span>
-        </div>
-        <div className="field mt-4">
-          <span className="p-float-label w-full">
-            <Calendar
-              id="age"
-              className="w-full"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              dateFormat="dd/mm/yy"
-              mask="99/99/9999"
-              showIcon
+        <div className="p-fluid grid formgrid display-flex justify-content-around">
+          <div className="col-12 md:col-3">
+            <label htmlFor="maxPersons">Max Persons</label>
+            <InputNumber
+              inputId="integeronly"
+              value={maxPersons}
+              onValueChange={(e) => setMaxPersons(e.target.value)}
+              min={0}
+              max={10}
             />
-            <label htmlFor="date">Birthday</label>
-          </span>
-        </div>
-        <div className="card">
-          <h5>Profile Pict</h5>
-          <FileUpload
-            mode="basic"
-            name="demo[]"
-            url="https://primefaces.org/primereact/showcase/upload.php"
-            accept="image/*"
-            customUpload
-            uploadHandler={customBase64Uploader}
-          />
-        </div>
-        <div>
-          <div className="card mt-4 w-full">
-            <h5>Description</h5>
-            <InputTextarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={5}
-              cols={30}
-              autoResize
+          </div>
+          <div className="col-12 md:col-3">
+            <label htmlFor="numBedrooms">Bedrooms</label>
+            <InputNumber
+              inputId="integeronly"
+              value={numBedrooms}
+              onValueChange={(e) => setNumBedrooms(e.target.value)}
+              min={0}
+              max={10}
+            />
+          </div>
+          <div className="col-12 md:col-3">
+            <label htmlFor="numBathrooms">Bathrooms</label>
+            <InputNumber
+              inputId="integeronly"
+              value={numBathrooms}
+              onValueChange={(e) => setNumBathrooms(e.target.value)}
+              min={0}
+              max={10}
             />
           </div>
         </div>
-        <div className="field-checkbox mt-2">
-          <Checkbox inputId="accept" name="accept" checked={accept} onChange={(e) => setAccept(e.checked)} />
-          <label htmlFor="accept">I agree to the terms and conditions*</label>
+        <div className="field">
+          <label htmlFor="description" className="block pt-3">
+            Description
+          </label>
+          <InputTextarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={5}
+            cols={30}
+            className="w-full"
+          />
+        </div>
+        <div className="p-fluid grid formgrid display-flex justify-content-around">
+          <div className="field-checkbox col-12 md:col-2">
+            <Checkbox inputId="tv" value="TV" checked={tv} onChange={(e) => setTv(e.checked)} />
+            <label htmlFor="binary">TV</label>
+          </div>
+          <div className="field-checkbox col-12 md:col-2">
+            <Checkbox inputId="kitchen" value={kitchen} onChange={(e) => setKitchen(e.target.value)} />
+            <label htmlFor="binary">Kitchen</label>
+          </div>
+          <div className="field-checkbox col-12 md:col-2">
+            <Checkbox inputId="internet" value={internet} onChange={(e) => setInternet(e.target.value)} />
+            <label htmlFor="binary">Internet</label>
+          </div>
+          <div className="field-checkbox col-12 md:col-2">
+            <Checkbox
+              inputId="airconditioner"
+              value={airconditioner}
+              onChange={(e) => setAirconditioner(e.target.value)}
+            />
+            <label htmlFor="binary">Airconditioner</label>
+          </div>
+          <div className="field-checkbox col-12 md:col-2">
+            <Checkbox inputId="heating" value={heating} onChange={(e) => setHeating(e.target.value)} />
+            <label htmlFor="binary">Heating</label>
+          </div>
+        </div>
+        <div className="grid p-fluid-inputgroup display-flex justify-content-around">
+          <div className="col-6">
+            <InputText
+              placeholder="Address"
+              id="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <div className="col-2">
+            <InputText
+              placeholder="latitude"
+              id="latitude"
+              value={latitude}
+              onChange={(e) => setLatitude(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <div className="col-2">
+            <InputText
+              placeholder="longitude"
+              id="longitude"
+              value={longitude}
+              onChange={(e) => setLongitude(e.target.value)}
+              className="w-full"
+            />
+          </div>
         </div>
         <div className="field flex justify-content-center">
-          <Button label="Submit" className="mt-2" onClick={() => onSubmitRegister(name, email, password, age)} />
+          <Button label="Submit" className="mt-2" disabled={!isFulfilled} onClick={submit} />
         </div>
       </div>
     </div>
