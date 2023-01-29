@@ -9,30 +9,38 @@ export default class HomeTypeService {
     return axios.get(this.url);
   }
 
-  getOnebyId(homeTypeId) {
+  getHomeTypebyId(homeTypeId) {
     return axios.get(`${this.url}/${homeTypeId}`);
   }
 
-  createHomeType(token, userId, homeTypeId) {
-    return axios.post(`${this.url}/${homeTypeId}`, {
-      data: {
-        userId
+  createHomeType(token, userId, home) {
+    return axios.post(
+      `${this.url}`,
+      {
+        userId,
+        home
       },
-      header: {
-        Authorization: `Bearer ${token}`
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
   }
 
-  modifyHomeType(token, userId, homeTypeId) {
-    return axios.put(`${this.url}/${homeTypeId}`, {
-      data: {
-        userId
+  modifyHomeType({ token, userId, homeTypeId, home }) {
+    return axios.put(
+      `${this.url}/${homeTypeId}`,
+      {
+        userId,
+        home
       },
-      header: {
-        Authorization: `Bearer ${token}`
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
   }
 
   deleteHomeType(token, userId, homeTypeId) {
@@ -40,7 +48,7 @@ export default class HomeTypeService {
       data: {
         userId
       },
-      header: {
+      headers: {
         Authorization: `Bearer ${token}`
       }
     });
