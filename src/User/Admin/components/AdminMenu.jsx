@@ -1,18 +1,31 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { TabMenu } from 'primereact/tabmenu';
 
-const items = [
-  { label: 'User', icon: 'pi pi-fw pi-user-edit' },
-  { label: 'UserOrders', icon: 'pi pi-fw pi-file-edit' }
-];
+export default function AdminMenu({ activeIndex, setActiveIndex }) {
+  const items = [
+    {
+      label: 'Home Types',
+      icon: 'pi pi-fw pi-home'
+    },
+    {
+      label: 'Room Types',
+      icon: 'pi pi-fw pi-calendar'
+    },
+    {
+      label: 'Media',
+      icon: 'pi pi-fw pi-pencil'
+    },
+    {
+      label: 'Rented Spaces',
+      icon: 'pi pi-fw pi-pencil'
+    }
+  ];
 
-const AdminMenu = ({ activeIndex, setActiveIndex }) => (
-  <TabMenu model={items} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />
-);
+  return <TabMenu model={items} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />;
+}
 
 AdminMenu.propTypes = {
-  activeIndex: PropTypes.number,
-  setActiveIndex: PropTypes.func
+  activeIndex: PropTypes.number.isRequired,
+  setActiveIndex: PropTypes.func.isRequired
 };
-
-export default AdminMenu;
