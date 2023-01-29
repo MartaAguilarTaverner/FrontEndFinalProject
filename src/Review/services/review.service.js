@@ -9,7 +9,7 @@ export default class ReviewService {
     return axios.get(this.url);
   }
 
-  getOnebyId(token, reviewId) {
+  getReviewbyId(token, reviewId) {
     return axios.get(`${this.url}/${reviewId}`, {
       headers: {
         Authorization: `Bearer ${token}`
