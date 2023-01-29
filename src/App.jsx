@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Outlet } from 'react-router-dom';
 
-import UpMenu from './GeneralComponents/menubar/menubarFirst';
+import UpMenu from './GeneralComponents/UpMenu/UpMenu';
 
 import './App.css';
 
