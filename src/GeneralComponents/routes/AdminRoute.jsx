@@ -18,5 +18,5 @@ const useAuth = () => {
 export default function AdminRoute() {
   const auth = useAuth();
 
-  return auth ? <Outlet /> : <Navigate to="/home" />;
+  return auth ? <Outlet /> : <Navigate to="/" />;
 }
