@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
@@ -15,10 +15,12 @@ export default function FormRegister() {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [age, setAge] = useState(new Date());
-  const [accept, setAccept] = useState();
+  const [profileImg, setProfileImg] = useState(null);
+  const [accept, setAccept] = useState(false);
+  const [isFulfilled, setIsFulfilled] = useState(false);
 
   const customBase64Uploader = async (event) => {
     // convert file to base64 encoded
@@ -28,9 +30,31 @@ export default function FormRegister() {
     reader.readAsDataURL(blob);
     reader.onloadend = function () {
       const base64data = reader.result;
-      console.log(base64data);
+      setProfileImg(base64data);
     };
   };
+
+  const submit = () => {
+    const newUser = {
+      name,
+      surname,
+      email,
+      phoneNumber,
+      password,
+      age,
+      profileImg
+    };
+
+    onSubmitRegister(newUser);
+  };
+
+  useEffect(() => {
+    console.log(name, surname, email, phoneNumber, password, age, profileImg, accept);
+
+    if (name && surname && email && phoneNumber && password && age && profileImg && accept) {
+      setIsFulfilled(true);
+    }
+  }, [name, surname, email, phoneNumber, password, age, profileImg, accept]);
 
   return (
     <div className="flex justify-content-center align-items-center register-container">
@@ -70,8 +94,8 @@ export default function FormRegister() {
             <InputText
               placeholder="phone"
               id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="w-full"
             />
           </div>
@@ -118,7 +142,7 @@ export default function FormRegister() {
           <label htmlFor="accept">I agree to the terms and conditions*</label>
         </div>
         <div className="field flex justify-content-center">
-          <Button label="Submit" className="mt-2" onClick={() => onSubmitRegister(name, email, password, age)} />
+          <Button label="Submit" className="mt-2" disabled={!isFulfilled} onClick={submit} />
         </div>
       </div>
     </div>
