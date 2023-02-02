@@ -8,6 +8,9 @@ import UserRegister from './User/Register';
 import UserProfile from './User/Profile';
 import Admin from './User/Admin/Admin';
 import AdminGeneralUser from './User/Admin/components/AdminGeneralUser';
+import AdminReview from './User/Admin/components/AdminReview/AdminNewReview';
+import AdminReservation from './User/Admin/components/AdminReservation/AdminReservation';
+import UserReservations from './Reservation/components/UserReservations/UserReservations';
 
 import PrivateRoute from './GeneralComponents/routes/PrivateRoute';
 import AdminRoute from './GeneralComponents/routes/AdminRoute';
@@ -24,7 +27,7 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoute />}>
         <Route path="/profile/:id" element={<UserProfile />} />
         {/* <Route path="/reservation" element={<ReservePlace />} /> */}
-        {/* <Route path="/trips" element={<Trips />} /> */}
+        <Route path="/reservation" element={<UserReservations />} />
         <Route path="/register-space" element={<SpaceRegister />} />
       </Route>
       <Route element={<OwnerRoute />}>
@@ -34,14 +37,8 @@ const router = createBrowserRouter(
       <Route element={<AdminRoute />}>
         <Route path="/admin" element={<Admin />} />
         <Route path="/user-list" element={<AdminGeneralUser />} />
-        {/* <Route path="/owneruser" element={<AdminOwnerUser />} /> */}
-        {/* <Route path="/adminuser" element={<AdminadminUser />} /> */}
-        {/* <Route path="/rentedspace" element={<AdminRentedSpace />} /> */}
-        {/* <Route path="/hometype" element={<AdminHomeType />} /> */}
-        {/* <Route path="/roomtype" element={<AdminRoomtype />} /> */}
-        {/* <Route path="/spacemedia" element={<AdminSpaceMedia />} /> */}
-        {/* <Route path="/reservation" element={<AdminReservation />} /> */}
-        {/* <Route path="/review" element={<AdminReview />} /> */}
+        <Route path="/reservation-list" element={<AdminReservation />} />
+        <Route path="/review-list" element={<AdminReview />} />
       </Route>
     </Route>
   )

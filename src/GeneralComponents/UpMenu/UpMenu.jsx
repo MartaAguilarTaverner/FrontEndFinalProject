@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 import { Menubar } from 'primereact/menubar';
-import { InputText } from 'primereact/inputtext';
 
 import { logout } from '../../User/store/user.store';
 
@@ -78,13 +77,35 @@ export default function UpMenu() {
       label: 'Reservations',
       icon: 'pi pi-fw pi-calendar',
       visible: token !== '',
-      command: () => navigate('/reservation')
+      items: [
+        {
+          label: 'Your Reservations',
+          visible: token !== '',
+          command: () => navigate('/reservation')
+        },
+        {
+          label: 'Reservations List',
+          visible: token !== '',
+          command: () => navigate('/reservation-list')
+        }
+      ]
     },
     {
       label: 'Reviews',
       icon: 'pi pi-fw pi-calendar',
       visible: token !== '',
-      command: () => navigate('/reservation')
+      items: [
+        {
+          label: 'Your Reviews',
+          visible: token !== '',
+          command: () => navigate('/reviews')
+        },
+        {
+          label: 'Reviews List',
+          visible: token !== '',
+          command: () => navigate('/review-list')
+        }
+      ]
     },
     {
       label: 'Admin',
