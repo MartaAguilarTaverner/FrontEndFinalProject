@@ -1,67 +1,112 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Column } from 'primereact/column';
-import { InputText } from 'primereact/inputtext';
-import { DataTable } from 'primereact/datatable';
-import { Button } from 'primereact/button';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Button } from 'primereact/button';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 import useRentedSpaceHook from '../../../../RentedSpace/hooks/rentedSpace.hook';
 
-export default function AdminReservations() {
-  const token = useSelector((state) => state.user.token);
-  const [RentedSpaces, setRentedSpaces] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const { getAllRentedSpaces } = useRentedSpaceHook();
+import './AdminRentedSpace.scss';
+import AdminNewRentedSpace from './AdminNewRentedSpace';
 
-  const getRentedSpacesList = useCallback(async () => {
-    const result = await getAllRentedSpaces(token);
+export default function AdminRentedSpace() {
+  const token = useSelector((state) => state.user.token);
+  const id = useSelector((state) => state.user.id);
+  const [rentedSpaces, setRentedSpaces] = useState([]);
+  const [opened, setOpened] = useState(false);
+  const [rentedSpaceItem, setRentedSpaceItem] = useState(null);
+  const { getAllRentedSpace, deleteRentedSpace } = useRentedSpaceHook();
+
+  const getRentedSpaceList = async () => {
+    const result = await getAllRentedSpace(token, id);
 
     setRentedSpaces(result.data);
-  }, [token]);
+  };
 
   useEffect(() => {
-    getRentedSpacesList();
-  }, [getRentedSpacesList]);
+    getRentedSpaceList();
+  }, []);
 
-  const header = (
+  const newRentedSpace = () => {
+    setOpened(true);
+  };
+
+  const editRentedSpace = (rowData) => {
+    setRentedSpaceItem(rowData);
+    setOpened(true);
+  };
+
+  const removeRentedSpace = (rowData) => {
+    confirmDialog({
+      message: 'Do you want to delete this rented space?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptClassName: 'p-button-danger',
+      accept: () => {
+        deleteRentedSpace(token, id, rowData.id);
+      },
+      reject: () => null
+    });
+  };
+
+  const header = () => (
     <div className="table-header">
-      <h5 className="mx-0 my-1">Manage Spaces</h5>
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
-        <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
-      </span>
+      <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={newRentedSpace} />
     </div>
   );
 
-  const actionBodyTemplate = () => (
+  const actionBodyTemplateHome = (rowData) => (
     <>
-      <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" />
-      <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" />
+      <Button
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-info mr-2"
+        onClick={() => editRentedSpace(rowData)}
+      />
+      <Button
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-danger"
+        onClick={() => removeRentedSpace(rowData)}
+      />
     </>
   );
 
   return (
-    <div className="datatable-crud-demo">
-      <div className="card">
+    <>
+      <div className="admin-rentedspace-container">
         <DataTable
-          value={RentedSpaces}
+          value={rentedSpaces}
+          header={header}
           dataKey="id"
           paginator
           rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-          globalFilter={globalFilter}
           responsiveLayout="scroll"
+          scrollable
+          size="small"
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false} />
-          <Column field="userId" header="userId" sortable style={{ minWidth: '12rem' }} />
-          <Column field="rentedSpaceId" header="Rented Space" sortable style={{ minWidth: '10rem' }} />
-          <Column field="startDate" header="Start Date" sortable style={{ minWidth: '10rem' }} />
-          <Column field="endDate" header="End Date" sortable style={{ minWidth: '10rem' }} />
-          <Column header="actions" exportable={false} style={{ minWidth: '12rem' }} body={actionBodyTemplate} />
+          <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} />
+          <Column field="userId" header="UserId" sortable style={{ minWidth: '2rem' }} />
+          <Column field="homeTypeId" header="HomeTypeId" sortable style={{ minWidth: '9rem' }} />
+          <Column field="roomTypeId" header="RoomTypeId" sortable style={{ minWidth: '9rem' }} />
+          <Column field="mediaId" header="MediaId" sortable style={{ minWidth: '5rem' }} />
+          <Column field="title" header="Title" sortable style={{ minWidth: '5rem' }} />
+          <Column field="maxPersons" header="Max Persons" sortable style={{ minWidth: '5rem' }} />
+          <Column field="numBedrooms" header="Bedrooms" sortable style={{ minWidth: '5rem' }} />
+          <Column field="numBathrooms" header="Bathrooms" sortable style={{ minWidth: '5rem' }} />
+          <Column field="address" header="Address" sortable style={{ minWidth: '7rem' }} />
+          <Column field="tv" header="TV" sortable style={{ minWidth: '2rem' }} />
+          <Column field="kitchen" header="Kitchen" sortable style={{ minWidth: '5rem' }} />
+          <Column field="airconditioner" header="Airconditioner" sortable style={{ minWidth: '10rem' }} />
+          <Column field="heating" header="Heating" sortable style={{ minWidth: '5rem' }} />
+          <Column field="internet" header="Internet" sortable style={{ minWidth: '5rem' }} />
+          <Column field="price" header="Price" sortable style={{ minWidth: '5rem' }} />
+          <Column body={actionBodyTemplateHome} exportable={false} style={{ minWidth: '5rem' }} />
         </DataTable>
       </div>
-    </div>
+      <AdminNewRentedSpace opened={opened} setOpened={setOpened} rentedSpaceItem={rentedSpaceItem} />
+      <ConfirmDialog />
+    </>
   );
 }
