@@ -13,10 +13,6 @@ export default function AdminMenu({ activeIndex, setActiveIndex }) {
       icon: 'pi pi-fw pi-calendar'
     },
     {
-      label: 'Media',
-      icon: 'pi pi-fw pi-pencil'
-    },
-    {
       label: 'Rented Spaces',
       icon: 'pi pi-fw pi-pencil'
     }
