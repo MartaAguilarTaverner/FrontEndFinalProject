@@ -7,6 +7,11 @@ import { FileUpload } from 'primereact/fileupload';
 import { InputTextarea } from 'primereact/inputtextarea';
 
 import useRentedSpaceHook from '../../hooks/rentedSpace.hook';
+import useHomeTypeHook from '../../HomeType/hooks/homeType.hook';
+import useMediaHook from '../../Media/hooks/media.hooks';
+import useRoomTypeHook from '../../RoomType/hooks/roomType.hook';
+
+import './rentedSpaceRegister.scss';
 
 export default function RentspaceRegister() {
   const { onSubmitSpaceregister } = useRentedSpaceHook();
@@ -22,8 +27,6 @@ export default function RentspaceRegister() {
   const [heating, setHeating] = useState(false);
   const [internet, setInternet] = useState(false);
   const [price, setPrice] = useState(0);
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
   const [isFulfilled, setIsFulfilled] = useState(false);
 
   const submit = () => {
@@ -39,9 +42,7 @@ export default function RentspaceRegister() {
       airconditioner,
       heating,
       internet,
-      price,
-      latitude,
-      longitude
+      price
     };
 
     onSubmitSpaceregister(newRentedSpace);
@@ -60,9 +61,7 @@ export default function RentspaceRegister() {
       airconditioner &&
       heating &&
       internet &&
-      price &&
-      latitude &&
-      longitude
+      price
     ) {
       setIsFulfilled(true);
     }
@@ -78,18 +77,12 @@ export default function RentspaceRegister() {
     airconditioner,
     heating,
     internet,
-    price,
-    latitude,
-    longitude
+    price
   ]);
-
-  const setTest = (value) => {
-    console.log('🚀 ~ file: rentedSpaceRegister.jsx:87 ~ setTest ~ value', value);
-  };
 
   return (
     <div className="flex justify-content-center align-items-center register-container">
-      <div className="card register-form">
+      <div className="card registerplace-form">
         <h5 className="text-center register-text">Regist your Space</h5>
         <div className="field">
           <label htmlFor="Title" className='"block'>
@@ -146,29 +139,31 @@ export default function RentspaceRegister() {
             <Checkbox inputId="tv" value="TV" checked={tv} onChange={(e) => setTv(e.checked)} />
             <label htmlFor="binary">TV</label>
           </div>
-          <div className="field-checkbox col-12 md:col-2">
-            <Checkbox inputId="kitchen" value={kitchen} onChange={(e) => setKitchen(e.target.value)} />
+          <div className="field-checkbox col-6 md:col-2">
+            <Checkbox inputId="kitchen" value={kitchen} checked={kitchen} onChange={(e) => setKitchen(e.checked)} />
             <label htmlFor="binary">Kitchen</label>
           </div>
-          <div className="field-checkbox col-12 md:col-2">
-            <Checkbox inputId="internet" value={internet} onChange={(e) => setInternet(e.target.value)} />
+          <div className="field-checkbox col-6 md:col-2">
+            <Checkbox inputId="internet" value={internet} checked={internet} onChange={(e) => setInternet(e.checked)} />
             <label htmlFor="binary">Internet</label>
           </div>
-          <div className="field-checkbox col-12 md:col-2">
+          <div className="field-checkbox col-6 md:col-2">
             <Checkbox
               inputId="airconditioner"
               value={airconditioner}
-              onChange={(e) => setAirconditioner(e.target.value)}
+              checked={airconditioner}
+              onChange={(e) => setAirconditioner(e.checked)}
             />
             <label htmlFor="binary">Airconditioner</label>
           </div>
-          <div className="field-checkbox col-12 md:col-2">
-            <Checkbox inputId="heating" value={heating} onChange={(e) => setHeating(e.target.value)} />
+          <div className="field-checkbox col-6 md:col-2">
+            <Checkbox inputId="heating" value={heating} checked={heating} onChange={(e) => setHeating(e.checked)} />
             <label htmlFor="binary">Heating</label>
           </div>
         </div>
         <div className="grid p-fluid-inputgroup display-flex justify-content-around">
           <div className="col-6">
+            <label htmlFor="binary">Address:</label>
             <InputText
               placeholder="Address"
               id="address"
@@ -177,21 +172,13 @@ export default function RentspaceRegister() {
               className="w-full"
             />
           </div>
-          <div className="col-2">
+          <div className="col-3">
+            <label htmlFor="binary">Price:</label>
             <InputText
-              placeholder="latitude"
-              id="latitude"
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-              className="w-full"
-            />
-          </div>
-          <div className="col-2">
-            <InputText
-              placeholder="longitude"
-              id="longitude"
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
+              placeholder="Price"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               className="w-full"
             />
           </div>
@@ -203,3 +190,15 @@ export default function RentspaceRegister() {
     </div>
   );
 }
+
+/* const customBase64Uploader = async (event) => {
+  // convert file to base64 encoded
+  const file = event.files[0];
+  const reader = new FileReader();
+  const blob = await fetch(file.objectURL).then((r) => r.blob()); // blob:url
+  reader.readAsDataURL(blob);
+  reader.onloadend = function () {
+    const base64data = reader.result;
+    setProfileImg(base64data);
+  };
+}; */
