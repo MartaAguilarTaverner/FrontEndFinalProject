@@ -16,7 +16,7 @@ export default class ReservationService {
     });
   }
 
-  getAllReservationbyuser(token, userId) {
+  getAllReservationbyUser(token, userId) {
     return axios.get(`${this.url}/user`, {
       data: {
         userId
@@ -51,8 +51,8 @@ export default class ReservationService {
     });
   }
 
-  doReservation(token, userId, rentedSpaceId, reservationId) {
-    return axios.post(`${this.url}/${reservationId}`, {
+  doReservation(token, userId, rentedSpaceId) {
+    return axios.post(`${this.url}`, {
       data: {
         userId,
         rentedSpaceId

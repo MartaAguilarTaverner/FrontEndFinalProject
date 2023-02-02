@@ -38,9 +38,9 @@ const useUserHook = () => {
     }
   };
 
-  const onSubmitRegister = async ({ name, surname, email, phoneNumber, password, age, profileImg }) => {
+  const onSubmitRegister = async ({ name, surname, email, phoneNumber, password, age }) => {
     try {
-      if (checkIfRegisterDataIsValid(name, surname, email, phoneNumber, password, age, profileImg)) {
+      if (checkIfRegisterDataIsValid(name, surname, email, phoneNumber, password, age)) {
         alert('Something went wrong while trying to register with this data');
 
         return;
@@ -52,8 +52,7 @@ const useUserHook = () => {
         email,
         password,
         age,
-        phoneNumber,
-        profileImg
+        phoneNumber
       };
 
       const result = await userService.register(registerData);

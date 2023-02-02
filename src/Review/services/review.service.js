@@ -9,6 +9,17 @@ export default class ReviewService {
     return axios.get(this.url);
   }
 
+  getAllReviewbyUser(token, userId) {
+    return axios.get(`${this.url}/user`, {
+      data: {
+        userId
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
   getReviewbyId(token, reviewId) {
     return axios.get(`${this.url}/${reviewId}`, {
       headers: {
@@ -17,11 +28,11 @@ export default class ReviewService {
     });
   }
 
-  doReview(token, userId, rentedSpaceId) {
-    return axios.post(`${this.url}/${rentedSpaceId}`, {
+  doReview(token, userId, review) {
+    return axios.post(this.url, {
       data: {
         userId,
-        rentedSpaceId
+        review
       },
       headers: {
         Authorization: `Bearer ${token}`
