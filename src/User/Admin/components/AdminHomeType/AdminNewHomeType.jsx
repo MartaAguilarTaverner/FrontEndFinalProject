@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -8,6 +10,9 @@ import useHomeTypeHook from '../../../../RentedSpace/HomeType/hooks/homeType.hoo
 
 export default function AdminHomeType({ opened, setOpened, homeTypeItem }) {
   const { createHomeType } = useHomeTypeHook();
+
+  const token = useSelector((state) => state.user.token);
+  const id = useSelector((state) => state.user.id);
   const [name, setName] = useState('');
 
   const addHomeType = async () => {
@@ -15,7 +20,7 @@ export default function AdminHomeType({ opened, setOpened, homeTypeItem }) {
       name
     };
 
-    await createHomeType(newHomeType);
+    await createHomeType(token, id, newHomeType);
     setOpened(false);
   };
 
