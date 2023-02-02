@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Buffer } from 'buffer';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Password } from 'primereact/password';
-import { FileUpload } from 'primereact/fileupload';
 import { Checkbox } from 'primereact/checkbox';
 
 import useUserHook from '../../hooks';
@@ -20,7 +18,6 @@ export default function AdminGeneralNewUser({ opened, setOpened, userItem }) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [age, setAge] = useState(new Date());
-  const [profileImg, setProfileImg] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const addUser = async () => {
@@ -31,31 +28,15 @@ export default function AdminGeneralNewUser({ opened, setOpened, userItem }) {
       phoneNumber,
       password,
       age,
-      profileImg,
       isAdmin
     };
 
     await createUser(newUser);
-
     setOpened(false);
   };
 
   const updateUser = async () => {
-    console.log('YAY!');
-
     setOpened(false);
-  };
-
-  const customBase64Uploader = async (event) => {
-    // convert file to base64 encoded
-    const file = event.files[0];
-    const reader = new FileReader();
-    const blob = await fetch(file.objectURL).then((r) => r.blob()); // blob:url
-    reader.readAsDataURL(blob);
-    reader.onloadend = function () {
-      const base64data = reader.result;
-      setProfileImg(base64data);
-    };
   };
 
   const productDialogFooter = (
@@ -72,7 +53,6 @@ export default function AdminGeneralNewUser({ opened, setOpened, userItem }) {
       setEmail(userItem.email);
       setPhoneNumber(userItem.phoneNumber);
       setAge(new Date(userItem.age));
-      setProfileImg(Buffer.from(userItem.profileImg).toString('base64'));
       setIsAdmin(userItem.isAdmin);
     }
   }, [userItem]);
@@ -153,13 +133,6 @@ export default function AdminGeneralNewUser({ opened, setOpened, userItem }) {
             Birthday
           </label>
         </span>
-      </div>
-      <div className="display-flex justify-content-center">
-        <label className="text-black-alpha-90 font-bold" htmlFor="profilePict">
-          Profile Image
-        </label>
-        {userItem && <img src={userItem.profileImg} alt="profile" />}
-        <FileUpload mode="basic" name="fileUpload" accept="image/*" customUpload uploadHandler={customBase64Uploader} />
       </div>
       <div className="field mt-4">
         <Checkbox inputId="isAdmin" name="isAdmin" checked={isAdmin} onChange={(e) => setIsAdmin(e.checked)} />
