@@ -4,7 +4,6 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
-import { FileUpload } from 'primereact/fileupload';
 
 import useUserHook from '../hooks';
 
@@ -18,21 +17,8 @@ export default function FormRegister() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [age, setAge] = useState(new Date());
-  const [profileImg, setProfileImg] = useState(null);
   const [accept, setAccept] = useState(false);
   const [isFulfilled, setIsFulfilled] = useState(false);
-
-  const customBase64Uploader = async (event) => {
-    // convert file to base64 encoded
-    const file = event.files[0];
-    const reader = new FileReader();
-    const blob = await fetch(file.objectURL).then((r) => r.blob()); // blob:url
-    reader.readAsDataURL(blob);
-    reader.onloadend = function () {
-      const base64data = reader.result;
-      setProfileImg(base64data);
-    };
-  };
 
   const submit = () => {
     const newUser = {
@@ -41,18 +27,17 @@ export default function FormRegister() {
       email,
       phoneNumber,
       password,
-      age,
-      profileImg
+      age
     };
 
     onSubmitRegister(newUser);
   };
 
   useEffect(() => {
-    if (name && surname && email && phoneNumber && password && age && profileImg && accept) {
+    if (name && surname && email && phoneNumber && password && age && accept) {
       setIsFulfilled(true);
     }
-  }, [name, surname, email, phoneNumber, password, age, profileImg, accept]);
+  }, [name, surname, email, phoneNumber, password, age, accept]);
 
   return (
     <div className="flex justify-content-center align-items-center register-container">
@@ -122,18 +107,6 @@ export default function FormRegister() {
               Birthday
             </label>
           </span>
-        </div>
-        <div className="display-flex justify-content-center">
-          <label className="text-black-alpha-90 font-bold" htmlFor="profilePict">
-            Profile Pict
-          </label>
-          <FileUpload
-            mode="basic"
-            name="fileUpload"
-            accept="image/*"
-            customUpload
-            uploadHandler={customBase64Uploader}
-          />
         </div>
         <div className="field-checkbox mt-2">
           <Checkbox inputId="accept" name="accept" checked={accept} onChange={(e) => setAccept(e.checked)} />
