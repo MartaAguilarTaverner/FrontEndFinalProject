@@ -1,8 +1,13 @@
 .registerplace-form {
   background-color: rgb(126, 143, 75);
-  border-radius: 8%;
-  overflow-y: scroll;
-  overflow-y: hidden;
+  border-radius: 3rem;
   max-height: 100%;
-  max-width: 100%;
+  padding: 2rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .registerplace-form {
+    overflow-y: scroll;
+    border-radius: 0;
+  }
 }

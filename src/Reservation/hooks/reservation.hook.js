@@ -15,11 +15,11 @@ const useReservationHook = () => {
     return result;
   };
 
-  const getAllReservationbyUser = async (token, userId) => {
+  const getAllReservationbyUser = async (token, userId, user) => {
     let result;
 
     try {
-      result = await reservationService.getAllReservationbyUser(token, userId);
+      result = await reservationService.getAllReservationbyUser(token, userId, user);
     } catch (error) {
       alert(error);
     }

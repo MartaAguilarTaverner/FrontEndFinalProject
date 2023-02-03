@@ -16,7 +16,7 @@ export default function UserReservations() {
   const { getAllReservationbyUser, deleteReservation } = useReservationHook();
 
   const getReservationList = async () => {
-    const result = await getAllReservationbyUser(token, id);
+    const result = await getAllReservationbyUser(token, id, { user: id });
 
     setReservations(result.data);
   };

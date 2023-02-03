@@ -81,7 +81,7 @@ export default function UpMenu() {
         {
           label: 'Your Reservations',
           visible: token !== '',
-          command: () => navigate('/reservation')
+          command: () => navigate('/reservations')
         },
         {
           label: 'Reservations List',

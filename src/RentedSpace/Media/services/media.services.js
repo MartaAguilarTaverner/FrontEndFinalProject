@@ -13,17 +13,19 @@ export default class MediaService {
     return axios.get(`${this.url}/${mediaId}`);
   }
 
-  createMedia({ token, userId, media, rentedSpaceId }) {
-    return axios.post(`${this.url}}`, {
-      data: {
+  createMedia({ token, userId, media }) {
+    return axios.post(
+      this.url,
+      {
         userId,
-        media,
-        rentedSpaceId
+        media
       },
-      headers: {
-        Authorization: `Bearer ${token}`
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
   }
 
   modifyMedia({ token, userId, media, mediaId }) {

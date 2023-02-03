@@ -7,7 +7,7 @@
 
 .login-form{
   background-color: rgb(126, 143, 75);
-  border-radius: 8%;
+  border-radius: 3rem;
   padding: 1rem;
 }
 
@@ -27,8 +27,14 @@
 
 .register-form{
   background-color: rgba(126, 143, 75, 0.942);
-  border-radius: 8%;
+  border-radius: 3rem;
   padding: 1rem;
+}
+
+@media  screen and (max-width: 1024px) {
+  .register-form {
+    border-radius: 0;
+  }
 }
 
 .register-text{
@@ -46,6 +52,6 @@
 
 .profile-form{
   background-color: rgba(126, 143, 75, 0.942); 
-  border-radius: 8%;
+  border-radius: 3rem;
   padding: 1rem;
 }

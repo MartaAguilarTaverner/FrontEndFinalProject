@@ -12,10 +12,10 @@ const itemTemplate = (media, Layout) => {
     return null;
   }
 
-  let result = <GridItem id={media.id} img={media.img} name={media.name} rating={media.rating} price={media.price} />;
+  let result = <GridItem id={media.id} img={media.mediaId} name={media.title} price={parseInt(media.price, 10)} />;
 
   if (Layout === 'list') {
-    result = <ListItem img={media.img} name={media.name} rating={media.rating} price={media.price} />;
+    result = <ListItem id={media.id} img={media.mediaId} name={media.title} price={parseInt(media.price, 10)} />;
   }
 
   return result;

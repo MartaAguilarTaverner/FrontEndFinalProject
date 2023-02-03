@@ -29,10 +29,8 @@ export default class RentedSpaceService {
     return axios.post(
       `${this.url}`,
       {
-        data: {
-          userId,
-          rentedSpace
-        }
+        userId,
+        rentedSpace
       },
       {
         headers: {

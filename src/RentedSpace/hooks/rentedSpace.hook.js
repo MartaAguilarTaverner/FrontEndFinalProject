@@ -1,7 +1,17 @@
+import { useNavigate } from 'react-router-dom';
+
 import RentedSpaceService from '../services/rentedSpace.service';
+import MediaService from '../Media/services/media.services';
+
+import useHomeTypeHook from '../HomeType/hooks/homeType.hook';
+import useRoomTypeHook from '../RoomType/hooks/roomType.hook';
 
 const useRentedSpaceHook = () => {
   const rentedSpaceService = new RentedSpaceService();
+  const mediaService = new MediaService();
+  const { getAllHomeType } = useHomeTypeHook();
+  const { getAllRoomType } = useRoomTypeHook();
+  const { navigate } = useNavigate();
 
   const getAllRentedSpaces = async () => {
     let result;
@@ -55,7 +65,23 @@ const useRentedSpaceHook = () => {
     let result;
 
     try {
+      const media = {};
+
+      rentedSpace.mediaList.forEach((mediaItem, index) => {
+        media[`img${index + 1}`] = mediaItem;
+      });
+
+      const resultMedia = await mediaService.createMedia({ token, userId, media });
+
+      delete rentedSpace.mediaList;
+
+      rentedSpace.mediaId = resultMedia.data.id;
+
       result = await rentedSpaceService.createRentedSpace(token, userId, rentedSpace);
+
+      if (result.data) {
+        navigate('/');
+      }
     } catch (error) {
       alert(error);
     }
@@ -87,6 +113,26 @@ const useRentedSpaceHook = () => {
     return result;
   };
 
+  const getDropdownValues = async () => {
+    let homeTypeList;
+    let roomTypeList;
+
+    try {
+      const homeTypeResult = await getAllHomeType();
+      const roomTypeResult = await getAllRoomType();
+
+      homeTypeList = homeTypeResult.data.map((homeType) => ({ label: homeType.name, value: homeType.id }));
+      roomTypeList = roomTypeResult.data.map((roomType) => ({ label: roomType.name, value: roomType.id }));
+    } catch (error) {
+      alert(error);
+    }
+
+    return {
+      homeTypeList,
+      roomTypeList
+    };
+  };
+
   return {
     getAllRentedSpaces,
     getAllRentedSpaceByHomeType,
@@ -94,7 +140,8 @@ const useRentedSpaceHook = () => {
     getRentedSpaceById,
     createRentedSpace,
     modifyRentedSpace,
-    deleteRentedSpace
+    deleteRentedSpace,
+    getDropdownValues
   };
 };
 

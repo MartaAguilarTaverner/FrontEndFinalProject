@@ -15,10 +15,10 @@ export default function UserReviewList() {
   const [reviews, setReviews] = useState([]);
   const [opened, setOpened] = useState(false);
   const [reviewItem, setReviewItem] = useState(null);
-  const { getAllReviews, deleteReview } = useReviewHook();
+  const { getAllReviewbyUser, deleteReview } = useReviewHook();
 
   const getReviewList = async () => {
-    const result = await getAllReviews(token, id);
+    const result = await getAllReviewbyUser(token, id);
 
     setReviews(result.data);
   };
@@ -72,7 +72,7 @@ export default function UserReviewList() {
           <Column body={actionBodyTemplateHome} exportable={false} style={{ minWidth: '8rem' }} />
         </DataTable>
       </div>
-      <AdminNewReview opened={opened} setOpened={setOpened} reviewItem={reviewItem} />
+      <UserReviewList opened={opened} setOpened={setOpened} reviewItem={reviewItem} />
       <ConfirmDialog />
     </>
   );
